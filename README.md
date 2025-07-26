@@ -1,9 +1,14 @@
-```
-
-```
-
+```markdown
 <p align="center">
   <img src="https://www.docker.com/wp-content/uploads/2022/03/vertical-logo-monochromatic.png" alt="Docker Logo" height="90">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Docker-Containerized-blue?logo=docker&logoColor=white" alt="Docker Badge"/>
+  <img src="https://img.shields.io/badge/Kubernetes-Ready-blueviolet?logo=kubernetes"/>
+  <img src="https://img.shields.io/badge/PostgreSQL-Persistent-brightgreen?logo=postgresql"/>
+  <img src="https://img.shields.io/badge/Node.js-Backend-lightgrey?logo=node.js"/>
+  <img src="https://img.shields.io/badge/Nginx-Frontend-009900?logo=nginx"/>
 </p>
 
 # DevOps Academy: Full-Stack Cloud-Native Demo
@@ -28,7 +33,7 @@ This is a hands-on, containerized DevOps Academy project featuring a Node.js bac
     `-- js
 \`-- script.js
 
-```
+````
 
 ---
 
@@ -37,18 +42,12 @@ This is a hands-on, containerized DevOps Academy project featuring a Node.js bac
 > **Requires:** [Docker](https://www.docker.com/get-started) & [Docker Compose](https://docs.docker.com/compose/install/)
 
 1. **Clone this repository:**
-
-   ```
+   ```bash
    git clone https://github.com/m-pasima/nginx-web-page
-   ```
-
-   ```
    cd nginx-web-page/
-   ```
-
 ````
 
-2. **Start all services (frontend, backend, Postgres)**
+2. **Start all services (frontend, backend, Postgres):**
 
    ```bash
    docker-compose up --build
@@ -63,13 +62,13 @@ This is a hands-on, containerized DevOps Academy project featuring a Node.js bac
 
 > Try real cloud-native deployments with [Minikube](https://minikube.sigs.k8s.io/) or any K8s cluster!
 
-1. **Apply Postgres StatefulSet**
+1. **Apply Postgres StatefulSet:**
 
    ```bash
    kubectl apply -f postgres-statefulset.yaml
    ```
 
-2. **Apply Backend & Frontend Deployments**
+2. **Apply Backend & Frontend Deployments:**
 
    ```bash
    kubectl apply -f backend-deployment.yaml
@@ -87,7 +86,7 @@ This is a hands-on, containerized DevOps Academy project featuring a Node.js bac
 
 ## 🛠️ Main Tech Stack
 
-* **Frontend:** Nginx + HTML/CSS/JS (webapp/)
+* **Frontend:** Nginx + HTML/CSS/JS (`webapp/`)
 * **Backend:** Node.js (Express) API
 * **Database:** PostgreSQL (persistent, with StatefulSet for K8s)
 * **Containerization:** Docker, Docker Compose, Kubernetes (YAML)
@@ -140,5 +139,3 @@ kubectl apply -f frontend-deployment.yaml
 </p>
 ```
 
-
-````
