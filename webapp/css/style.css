@@ -1,0 +1,75 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.top-bar {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 0.5rem 2rem;
+  text-align: right;
+  font-size: 0.9rem;
+}
+.top-bar a { color: #ffd700; text-decoration: none; }
+
+.navbar {
+  background: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: sticky; top: 0; z-index: 1000;
+}
+.navbar h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; color: #2c3e50;
+}
+.nav-links { display: flex; align-items: center; gap: 1rem; }
+.nav-links a {
+  color: #2c3e50; text-decoration: none; font-weight: 600;
+  transition: color 0.3s ease;
+}
+.nav-links a:hover { color: #ffd700; }
+.theme-btn {
+  padding: 0.5rem 1rem;
+  background: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.theme-btn:hover { background: #ffd700; color: #2c3e50; }
+.hero {
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  color: #fff; height: 80vh;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.hero-content { max-width: 600px; padding: 2rem; }
+.hero h2 {
+  font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 1rem;
+}
+.hero p { font-size: 1.2rem; margin-bottom: 2rem; }
+.cta-btn {
+  display: inline-block; padding: 0.75rem 2rem;
+  background: #ffd700; color: #2c3e50;
+  text-decoration: none; border-radius: 5px; font-weight: 600;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.cta-btn:hover { background: #e6c200; transform: translateY(-2px); }
+.footer {
+  background: #1a1a1a; color: #fff;
+  text-align: center; padding: 2rem; margin-top: 2rem;
+}
+.footer a { color: #ffd700; text-decoration: none; }
+.footer p { margin: 0.5rem 0; }
+body.dark-theme { background: #1a1a1a; color: #fff; }
+body.dark-theme .navbar { background: #2c3e50; box-shadow: 0 2px 5px rgba(255,255,255,0.1);}
+body.dark-theme .nav-links a { color: #fff; }
+body.dark-theme .nav-links a:hover { color: #ffd700; }
+body.dark-theme .theme-btn { background: #ffd700; color: #2c3e50; }
+body.dark-theme .theme-btn:hover { background: #e6c200; }
