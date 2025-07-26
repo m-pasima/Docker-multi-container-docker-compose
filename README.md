@@ -1,4 +1,4 @@
-```markdown
+
 <p align="center">
   <img src="https://www.docker.com/wp-content/uploads/2022/03/vertical-logo-monochromatic.png" alt="Docker Logo" height="90">
 </p>
