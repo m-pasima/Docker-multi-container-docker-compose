@@ -17,3 +17,4 @@ EXPOSE 80
 CMD ["/wait-for-it.sh", "backend:3000", "--", "nginx", "-g", "daemon off;"]
 
 
+
