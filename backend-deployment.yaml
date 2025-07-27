@@ -1,3 +1,4 @@
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: devops-backend:latest
+          image: ivykiera/nginx-web-page-backend:v1   # <--- Use your Docker Hub image
           ports:
             - containerPort: 3000
           env:

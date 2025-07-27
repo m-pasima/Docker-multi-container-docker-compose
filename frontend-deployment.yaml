@@ -1,3 +1,5 @@
+
+      nodePort: 30080  # Expose on http://localhost:30080
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: devops-academy-nginx:latest
+          image: ivykiera/nginx-web-page-frontend:v1    # <--- FROM DOCKER HUB!
           ports:
             - containerPort: 80
 ---

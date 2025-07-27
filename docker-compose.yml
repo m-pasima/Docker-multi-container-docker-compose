@@ -10,6 +10,7 @@ services:
 
   backend:
     build: ./backend
+    image: ivykiera/nginx-web-page-backend:v1   # <--- Add this line for backend if you want to push it too!
     environment:
       - PGHOST=db
       - PGUSER=postgres
@@ -20,6 +21,7 @@ services:
 
   frontend:
     build: .
+    image: ivykiera/nginx-web-page-frontend:v1  # <--- Add this line!
     ports:
       - "8080:80"
     depends_on:
@@ -27,3 +29,4 @@ services:
 
 volumes:
   pgdata:
+
