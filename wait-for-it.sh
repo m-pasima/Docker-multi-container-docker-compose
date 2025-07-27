@@ -5,10 +5,14 @@ set -e
 hostport="$1"
 shift
 
+
+
 while ! nc -z ${hostport%:*} ${hostport#*:}; do
   echo "Waiting for $hostport..."
   sleep 2
 done
+
 exec "$@"
+
 
 
