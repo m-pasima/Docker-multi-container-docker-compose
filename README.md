@@ -45,8 +45,8 @@ This project features a Node.js backend, PostgreSQL database, and an Nginx front
 > **Requires:** [Docker](https://www.docker.com/get-started), [Docker Compose](https://docs.docker.com/compose/install/)
 
 ```bash
-git clone https://github.com/m-pasima/nginx-web-page
-cd nginx-web-page/
+git clone https://github.com/m-pasima/Docker-multi-container-docker-compose.git
+cd Docker-multi-container-docker-compose/
 
 docker-compose up --build
 ```
