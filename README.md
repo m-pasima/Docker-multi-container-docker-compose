@@ -60,7 +60,7 @@ docker-compose up --build -d
 
 * Free your terminal for other commands
 
-**Access:** [http://localhost](http://localhost) or [http://EC2](http://PUBLIC-IP:port) 
+**Access:** [http://localhost](http://localhost) or [http://EC2-PUBLIC-IP:PORT]
 
 ---
 
