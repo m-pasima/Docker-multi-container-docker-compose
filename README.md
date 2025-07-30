@@ -48,10 +48,19 @@ This project features a Node.js backend, PostgreSQL database, and an Nginx front
 git clone https://github.com/m-pasima/Docker-multi-container-docker-compose.git
 cd Docker-multi-container-docker-compose/
 
-docker-compose up --build
+docker-compose up --build -d
 ```
+## This will:
 
-**Access:** [http://localhost](http://localhost)
+* Build the images
+
+* Start the containers
+
+* Run them in the background
+
+* Free your terminal for other commands
+
+**Access:** [http://localhost](http://localhost) or [http://EC2](http://PUBLIC-IP:port) 
 
 ---
 
