@@ -21,6 +21,8 @@ services:
       - PGDATABASE=devopsacademy
     depends_on:
       - db
+    volumes:
+      - contact_data:/data
     networks:
       - my_bridge
 
@@ -36,6 +38,7 @@ services:
 
 volumes:
   pgdata:
+  contact_data:
 
 networks:
   my_bridge:
