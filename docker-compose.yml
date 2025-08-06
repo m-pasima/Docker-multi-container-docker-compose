@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   db:
     image: postgres:16
@@ -7,10 +8,12 @@ services:
       - POSTGRES_DB=devopsacademy
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - my_bridge
 
   backend:
     build: ./backend
-    image: ivykiera/nginx-web-page-backend:v1   # <--- Add this line for backend if you want to push it too!
+    image: ivykiera/nginx-web-page-backend:v1
     environment:
       - PGHOST=db
       - PGUSER=postgres
@@ -18,15 +21,24 @@ services:
       - PGDATABASE=devopsacademy
     depends_on:
       - db
+    networks:
+      - my_bridge
 
   frontend:
     build: .
-    image: ivykiera/nginx-web-page-frontend:v1  # <--- Add this line!
+    image: ivykiera/nginx-web-page-frontend:v1
     ports:
       - "8080:80"
     depends_on:
       - backend
+    networks:
+      - my_bridge
 
 volumes:
   pgdata:
+
+networks:
+  my_bridge:
+    external: true
+
 
