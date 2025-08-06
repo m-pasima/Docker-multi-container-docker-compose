@@ -14,5 +14,25 @@ document.addEventListener('DOMContentLoaded', () => {
       form.reset();
     };
   }
+
+  const viewBtn = document.getElementById('view-contacts');
+  if(viewBtn){
+    viewBtn.onclick = async () => {
+      const output = document.getElementById('contacts-display');
+      output.textContent = 'Loading...';
+      try {
+        const res = await fetch('/api/contacts');
+        if(!res.ok) throw new Error('Request failed');
+        const contacts = await res.json();
+        if(contacts.length === 0){
+          output.textContent = 'No contacts found.';
+          return;
+        }
+        output.textContent = contacts.map(c => `Name: ${c.name}\nEmail: ${c.email}\nMessage: ${c.message}\n`).join('\n');
+      } catch (err) {
+        output.textContent = 'Failed to load contacts.';
+      }
+    };
+  }
 });
 

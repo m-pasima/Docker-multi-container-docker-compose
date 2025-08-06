@@ -9,6 +9,10 @@ const pool = new Pool({
   port: 5432
 });
 app.use(express.json());
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 // Create table if not exists, then insert enquiry
 app.post('/api/enquiry', async (req, res) => {
@@ -34,6 +38,15 @@ app.post('/api/enquiry', async (req, res) => {
 app.get('/api/enquiry', async (req, res) => {
   try {
     const { rows } = await pool.query('SELECT * FROM enquiries ORDER BY ts DESC');
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({error: "db error"});
+  }
+});
+
+app.get('/api/contacts', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT name, email, message FROM enquiries ORDER BY ts DESC');
     res.json(rows);
   } catch (err) {
     res.status(500).json({error: "db error"});
