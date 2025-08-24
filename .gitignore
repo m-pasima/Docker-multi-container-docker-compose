@@ -1,0 +1,40 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Docker
+*.pid
+*.log
+*.sock
+*.tmp
+*.swp
+*.lock
+.dockerignore
+
+# Local environment / secrets
+#.env
+#.env.*        # e.g., .env.local, .env.dev
+*.secret
+*.key
+*.pem
+
+# Postgres data (mounted via volume; should never be in git)
+dbdata/
+pgdata/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs/editors
+.vscode/
+.idea/
+*.iml
+
+# Misc
+coverage/
+dist/
+build/

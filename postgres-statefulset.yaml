@@ -1,24 +1,41 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: fullstack
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secret
+  namespace: fullstack
+type: Opaque
+stringData:
+  POSTGRES_PASSWORD: appsecret
+  POSTGRES_USER: appuser
+  POSTGRES_DB: appdb
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: postgres
-  labels:
-    app: postgres
+  namespace: fullstack
 spec:
-  ports:
-    - port: 5432
-  clusterIP: None  # Headless service for stable network identity.It gives each pod a stable DNS entry.
   selector:
     app: postgres
-
+  ports:
+    - name: pg
+      port: 5432
+      targetPort: 5432
+  clusterIP: None  # headless for StatefulSet DNS
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
+  namespace: fullstack
 spec:
-  serviceName: "postgres"
-  replicas: 1   #  start with 1. Increase for clustering.
+  serviceName: postgres
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
@@ -28,25 +45,45 @@ spec:
         app: postgres
     spec:
       containers:
-      - name: postgres
-        image: postgres:16
-        ports:
-        - containerPort: 5432
-        env:
-        - name: POSTGRES_DB
-          value: devopsacademy
-        - name: POSTGRES_USER
-          value: postgres
-        - name: POSTGRES_PASSWORD
-          value: mysecretpassword
-        volumeMounts:
-        - name: pgdata
-          mountPath: /var/lib/postgresql/data
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+              subPath: data
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "appuser", "-d", "appdb", "-h", "127.0.0.1"]
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 30
+            periodSeconds: 10
   volumeClaimTemplates:
-  - metadata:
-      name: pgdata
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 1Gi
+    - metadata:
+        name: pgdata
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi

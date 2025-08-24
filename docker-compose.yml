@@ -1,49 +1,79 @@
-version: '3.8'
 
 services:
   db:
     image: postgres:16
+    container_name: db
+    restart: unless-stopped
     environment:
-      - POSTGRES_PASSWORD=mysecretpassword
-      - POSTGRES_DB=devopsacademy
+      POSTGRES_DB: ${POSTGRES_DB:-appdb}
+      POSTGRES_USER: ${POSTGRES_USER:-appuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-appsecret}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - dbdata:/var/lib/postgresql/data
     networks:
-      - my_bridge
+      - app_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB -h 127.0.0.1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
 
   backend:
-    build: ./backend
-    image: ivykiera/nginx-web-page-backend:v1
-    environment:
-      - PGHOST=db
-      - PGUSER=postgres
-      - PGPASSWORD=mysecretpassword
-      - PGDATABASE=devopsacademy
+    build:
+      context: ./backend
+    image: ${BACKEND_IMAGE:-ivykiera/nginx-web-page-backend:v1}
+    container_name: backend
+    restart: unless-stopped
     depends_on:
       - db
-    volumes:
-      - contact_data:/data
+    environment:
+      PORT: ${PORT_BACKEND:-3000}
+      # Use a real DSN (Compose will expand these):
+      DATABASE_URL: "postgres://${POSTGRES_USER:-appuser}:${POSTGRES_PASSWORD:-appsecret}@db:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-appdb}"
+      # (Optional) also pass discrete vars for libraries that read PG* env:
+      PGHOST: db
+      PGPORT: ${POSTGRES_PORT:-5432}
+      PGUSER: ${POSTGRES_USER:-appuser}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-appsecret}
+      PGDATABASE: ${POSTGRES_DB:-appdb}
+    ports:
+      - "${PORT_BACKEND:-3000}:3000"
     networks:
-      - my_bridge
+      - app_net
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:'+ (process.env.PORT||3000) +'/health', r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
 
   frontend:
-    build: .
-    image: ivykiera/nginx-web-page-frontend:v1
-    ports:
-      - "8080:80"
+    build:
+      context: .
+    image: ${FRONTEND_IMAGE:-ivykiera/nginx-web-page-frontend:v1}
+    container_name: frontend
+    restart: unless-stopped
     depends_on:
       - backend
+    environment:
+      BACKEND_URL: "http://backend:${PORT_BACKEND:-3000}"
+    ports:
+      - "${PORT_FRONTEND:-8080}:80"
     networks:
-      - my_bridge
-
-volumes:
-  pgdata:
-  contact_data:
+      - app_net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/ >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
 
 networks:
-  my_bridge:
-    external: true
+  app_net:
+    driver: bridge
 
+volumes:
+  dbdata:
 
 
 
